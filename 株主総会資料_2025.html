@@ -727,9 +727,13 @@
     </div>
     
     <script>
-        // 月次売上推移グラフ
-        const salesCtx = document.getElementById('salesChart').getContext('2d');
-        new Chart(salesCtx, {
+        // グラフの初期化を確実にするためにDOMContentLoadedイベントを使用
+        document.addEventListener('DOMContentLoaded', function() {
+            // 月次売上推移グラフ
+            const salesCanvas = document.getElementById('salesChart');
+            if (salesCanvas) {
+                const salesCtx = salesCanvas.getContext('2d');
+                new Chart(salesCtx, {
             type: 'line',
             data: {
                 labels: ['10月', '11月', '12月', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月'],
@@ -770,10 +774,13 @@
                 }
             }
         });
-        
-        // 資産構成円グラフ
-        const assetCtx = document.getElementById('assetChart').getContext('2d');
-        new Chart(assetCtx, {
+            }
+            
+            // 資産構成円グラフ
+            const assetCanvas = document.getElementById('assetChart');
+            if (assetCanvas) {
+                const assetCtx = assetCanvas.getContext('2d');
+                new Chart(assetCtx, {
             type: 'doughnut',
             data: {
                 labels: ['現金・預金', '医業未収入金', '商品', '仮払金', '固定資産'],
@@ -805,9 +812,10 @@
                 }
             }
         });
-        
-        // Intersection Observer for animations
-        const observer = new IntersectionObserver((entries) => {
+            }
+            
+            // Intersection Observer for animations
+            const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
@@ -822,6 +830,7 @@
             el.style.transition = 'all 0.6s ease';
             observer.observe(el);
         });
+        });  // DOMContentLoaded終了
     </script>
 </body>
 </html>
