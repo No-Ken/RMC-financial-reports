@@ -3,423 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RMC 購入分析インフォグラフィック</title>
-    <link rel="stylesheet" href="common-styles.css">
+    <title>RMC購入分析ダッシュボード - 経営インフォグラフィック</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* ページ固有のスタイル */
-        .page-specific {
-            /* 必要に応じて追加 */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        .status-excellent { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .status-good { background: linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%); }
+        .status-warning { background: linear-gradient(135deg, #F2994A 0%, #F27121 100%); }
+        .status-danger { background: linear-gradient(135deg, #EB5757 0%, #D13D3D 100%); }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide { animation: slideIn 0.5s ease-out; }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 280px;
+            width: 100%;
+        }
+        
+        .kpi-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .growth-indicator {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .growth-up { background: #10B981; color: white; }
+        .growth-down { background: #EF4444; color: white; }
+        
+        /* ナビゲーションタブ - 統一デザインを維持 */
+        .nav-tabs {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 0;
+            margin: 20px 0;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-tabs ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0 20px;
+        }
+        
+        .nav-tabs li {
+            display: inline-block;
+        }
+        
+        .nav-tabs a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+        
+        .nav-tabs a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .nav-tabs a.active {
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        /* ヘッダー - グラデーション背景 */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .header .date {
+            margin-top: 20px;
+            font-size: 1em;
+            opacity: 0.8;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <!-- ヘッダー -->
         <header class="header">
             <h1>六本木メディカルクリニック</h1>
-            <p class="subtitle">商品別売上とセグメント分析</p>
+            <p class="subtitle">購入分析ダッシュボード</p>
             <p class="date">2025年8月 最新データ</p>
             
             <!-- ナビゲーションタブ -->
             <nav class="nav-tabs">
                 <ul>
-                    <li><a href="./index.html" >経営分析レポート</a></li>
-                    <li><a href="./RMC戦略パターン詳細比較.html" >戦略パターン比較</a></li>
+                    <li><a href="./index.html">経営分析レポート</a></li>
+                    <li><a href="./RMC戦略パターン詳細比較.html">戦略パターン比較</a></li>
                     <li><a href="./RMC_購入分析_インフォグラフィック.html" class="active">購入分析</a></li>
-                    <li><a href="./購買行動分析_インフォグラフィック.html" >購買行動分析</a></li>
+                    <li><a href="./購買行動分析_インフォグラフィック.html">購買行動分析</a></li>
                 </ul>
             </nav>
         </header>
-
-        <!-- メインコンテンツ -->
-        <div class="content">
         
-        <!-- ヘッダー -->
-        <div class="glass p-8 mb-6 animate-slide">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">RMC購入分析ダッシュボード</h1>
-            <p class="text-gray-600">2024年9月 - 2025年8月 | 総合経営分析レポート</p>
-            <div class="flex gap-4 mt-4">
-                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">リアルタイムデータ</span>
-                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">最終更新: 2025/08/08</span>
-            </div>
-        </div>
-
-        <!-- 主要KPIカード -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div class="metric-card status-good animate-slide" style="animation-delay: 0.1s">
-                <div class="kpi-icon">💰</div>
-                <h3 class="text-sm opacity-90">ARPU(平均購入単価)</h3>
-                <p class="text-3xl font-bold">¥23,004</p>
-                <span class="growth-indicator growth-up">一回購入平均</span>
-            </div>
-            
-            <div class="metric-card status-excellent animate-slide" style="animation-delay: 0.2s">
-                <div class="kpi-icon">🔄</div>
-                <h3 class="text-sm opacity-90">リピート率</h3>
-                <p class="text-3xl font-bold">42.5%</p>
-                <span class="growth-indicator growth-up">優秀</span>
-            </div>
-            
-            <div class="metric-card status-warning animate-slide" style="animation-delay: 0.3s">
-                <div class="kpi-icon">💎</div>
-                <h3 class="text-sm opacity-90">顧客生涯価値(LTV)</h3>
-                <p class="text-3xl font-bold">¥40,369</p>
-                <span class="text-xs">過去実績ベース</span>
-            </div>
-            
-            <div class="metric-card status-danger animate-slide" style="animation-delay: 0.4s">
-                <div class="kpi-icon">📉</div>
-                <h3 class="text-sm opacity-90">離脱率</h3>
-                <p class="text-3xl font-bold">72.1%</p>
-                <span class="text-xs">要改善</span>
-            </div>
-        </div>
-
-        <!-- 売上推移グラフ -->
-        <div class="glass p-6 mb-6 animate-slide" style="animation-delay: 0.5s">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">📈 月次売上推移</h2>
-            <div class="chart-wrapper">
-                <canvas id="salesChart"></canvas>
-            </div>
-            <div class="mt-4 grid grid-cols-2 gap-4">
-                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
-                    <p class="text-sm text-gray-600">2024/9-2025/3 総売上</p>
-                    <p class="text-2xl font-bold text-purple-600">¥55,654,210</p>
-                </div>
-                <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-4">
-                    <p class="text-sm text-gray-600">2025/4-2025/8 総売上</p>
-                    <p class="text-2xl font-bold text-blue-600">¥72,048,680</p>
+        <!-- メインコンテンツ -->
+        <div style="padding: 40px;">
+            <!-- ヘッダー -->
+            <div class="glass p-8 mb-6 animate-slide">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">RMC購入分析ダッシュボード</h1>
+                <p class="text-gray-600">2024年9月 - 2025年8月 | 総合経営分析レポート</p>
+                <div class="flex gap-4 mt-4">
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">リアルタイムデータ</span>
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">最終更新: 2025/08/08</span>
                 </div>
             </div>
-        </div>
 
-        <!-- 商品別売上構成 -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <div class="glass p-6 animate-slide" style="animation-delay: 0.6s">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">📦 商品別売上構成</h2>
+            <!-- 主要KPIカード -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="metric-card status-good animate-slide" style="animation-delay: 0.1s">
+                    <div class="kpi-icon">💰</div>
+                    <h3 class="text-sm opacity-90">ARPU(平均購入単価)</h3>
+                    <p class="text-3xl font-bold">¥23,004</p>
+                    <span class="growth-indicator growth-up">一回購入平均</span>
+                </div>
+                
+                <div class="metric-card status-excellent animate-slide" style="animation-delay: 0.2s">
+                    <div class="kpi-icon">🔄</div>
+                    <h3 class="text-sm opacity-90">リピート率</h3>
+                    <p class="text-3xl font-bold">42.5%</p>
+                    <span class="growth-indicator growth-up">優秀</span>
+                </div>
+                
+                <div class="metric-card status-warning animate-slide" style="animation-delay: 0.3s">
+                    <div class="kpi-icon">💎</div>
+                    <h3 class="text-sm opacity-90">顧客生涯価値(LTV)</h3>
+                    <p class="text-3xl font-bold">¥40,369</p>
+                    <span class="text-xs">過去実績ベース</span>
+                </div>
+                
+                <div class="metric-card status-danger animate-slide" style="animation-delay: 0.4s">
+                    <div class="kpi-icon">📉</div>
+                    <h3 class="text-sm opacity-90">離脱率</h3>
+                    <p class="text-3xl font-bold">72.1%</p>
+                    <span class="text-xs">要改善</span>
+                </div>
+            </div>
+
+            <!-- 売上推移グラフ -->
+            <div class="glass p-6 mb-6 animate-slide" style="animation-delay: 0.5s">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">📈 月次売上推移</h2>
                 <div class="chart-wrapper">
-                    <canvas id="productChart"></canvas>
+                    <canvas id="salesChart"></canvas>
                 </div>
-                <div class="mt-4">
-                    <div class="bg-red-50 border-l-4 border-red-400 p-3 rounded">
-                        <p class="text-sm text-red-800">⚠️ マンジャロへの依存度85.4%</p>
-                        <p class="text-xs text-red-600 mt-1">リスク分散が必要</p>
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <p class="text-sm text-gray-600">2024/9-2025/3 総売上</p>
+                        <p class="text-2xl font-bold text-purple-600">¥55,654,210</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-4">
+                        <p class="text-sm text-gray-600">2025/4-2025/8 総売上</p>
+                        <p class="text-2xl font-bold text-blue-600">¥72,048,680</p>
                     </div>
                 </div>
             </div>
-            
-            <div class="glass p-6 animate-slide" style="animation-delay: 0.7s">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">👥 顧客セグメント分析</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- チャート部分 -->
+
+            <!-- 商品別売上構成 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div class="glass p-6 animate-slide" style="animation-delay: 0.6s">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">📦 商品別売上構成</h2>
+                    <div class="chart-wrapper">
+                        <canvas id="productChart"></canvas>
+                    </div>
+                    <div class="mt-4">
+                        <div class="bg-red-50 border-l-4 border-red-400 p-3 rounded">
+                            <p class="text-sm text-red-800">⚠️ マンジャロへの依存度85.4%</p>
+                            <p class="text-xs text-red-600 mt-1">リスク分散が必要</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass p-6 animate-slide" style="animation-delay: 0.7s">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">👥 顧客セグメント分析</h2>
                     <div class="chart-wrapper">
                         <canvas id="segmentChart"></canvas>
                     </div>
-                    
-                    <!-- セグメント詳細解説 -->
-                    <div class="space-y-3">
-                        <div class="bg-purple-50 border-l-4 border-purple-400 p-3 rounded">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-purple-800">🏆 VIP顧客</span>
-                                <span class="font-bold text-purple-600">226人 (16.2%)</span>
-                            </div>
-                            <p class="text-xs text-purple-700">高頻度・高額・最近購入の優良顧客。特別サービスで維持</p>
-                        </div>
-                        
-                        <div class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-blue-800">🆕 新規顧客</span>
-                                <span class="font-bold text-blue-600">425人 (30.4%)</span>
-                            </div>
-                            <p class="text-xs text-blue-700">最近購入したが頻度は低い。リピート促進が重要</p>
-                        </div>
-                        
-                        <div class="bg-red-50 border-l-4 border-red-400 p-3 rounded">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-red-800">⚠️ 離脱リスク顧客</span>
-                                <span class="font-bold text-red-600">420人 (30.0%)</span>
-                            </div>
-                            <p class="text-xs text-red-700">過去は購入していたが最近は購入なし。要再活性化</p>
-                        </div>
-                        
-                        <div class="bg-gray-50 border-l-4 border-gray-400 p-3 rounded">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-gray-800">😴 休眠顧客</span>
-                                <span class="font-bold text-gray-600">134人 (9.6%)</span>
-                            </div>
-                            <p class="text-xs text-gray-700">長期間購入なし。復活キャンペーンの対象</p>
-                        </div>
-                        
-                        <div class="bg-green-50 border-l-4 border-green-400 p-3 rounded">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-green-800">✅ 安定顧客</span>
-                                <span class="font-bold text-green-600">132人 (9.4%)</span>
-                            </div>
-                            <p class="text-xs text-green-700">定期的に購入する安定顧客。現状維持で問題なし</p>
-                        </div>
-                        
-                        <div class="bg-orange-50 border-l-4 border-orange-400 p-3 rounded">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-orange-800">💎 ロイヤル顧客</span>
-                                <span class="font-bold text-orange-600">62人 (4.4%)</span>
-                            </div>
-                            <p class="text-xs text-orange-700">高頻度購入の忠実顧客。VIP昇格を目指す</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 重要インサイト -->
-                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                        <h4 class="font-bold text-yellow-800 mb-2">🎯 優先アクション</h4>
-                        <ul class="text-sm text-yellow-700 space-y-1">
-                            <li>• 新規顧客425人のリピート促進</li>
-                            <li>• 離脱リスク420人の再活性化</li>
-                            <li>• VIP顧客226人への特別サービス</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <h4 class="font-bold text-blue-800 mb-2">📊 セグメント特徴</h4>
-                        <ul class="text-sm text-blue-700 space-y-1">
-                            <li>• 60.4%が新規・離脱リスク</li>
-                            <li>• 優良顧客(VIP+ロイヤル)は20.6%</li>
-                            <li>• 安定顧客の育成が課題</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- 顧客継続性分析 -->
-        <div class="glass p-6 mb-6 animate-slide" style="animation-delay: 0.8s">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">📊 顧客継続性・購買パターン分析</h2>
-            
-            <!-- ARPUとLTVの説明 -->
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded mb-6">
-                <div class="flex items-start">
-                    <span class="text-2xl mr-3">📊</span>
-                    <div>
-                        <h4 class="font-bold text-blue-800">ARPU（¥23,004）とLTV（¥40,369）の関係</h4>
-                        <p class="text-sm text-blue-700 mt-1">
-                            <strong>ARPU</strong>: 一回あたりの平均購入金額 | <strong>LTV</strong>: 顧客の生涯合計購入金額<br>
-                            LTV ÷ ARPU = 1.8倍（平均1.8回購入）。57.5%が1回のみ購入のため、継続購入促進が重要です。
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- メトリクスカード -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
-                    <h3 class="text-sm text-gray-600 mb-2">平均購入回数</h3>
-                    <p class="text-2xl font-bold text-blue-600">1.8回</p>
-                    <p class="text-xs text-gray-500 mt-1">LTV ÷ ARPU</p>
-                </div>
-                <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4">
-                    <h3 class="text-sm text-gray-600 mb-2">平均取引額</h3>
-                    <p class="text-2xl font-bold text-purple-600">¥23,004</p>
-                    <p class="text-xs text-purple-500 mt-1">ARPU</p>
-                </div>
-                <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-4">
-                    <h3 class="text-sm text-gray-600 mb-2">初回のみ購入者</h3>
-                    <p class="text-2xl font-bold text-red-600">805人</p>
-                    <p class="text-xs text-red-500 mt-1">全体の57.5%</p>
-                </div>
-                <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4">
-                    <h3 class="text-sm text-gray-600 mb-2">継続購入者</h3>
-                    <p class="text-2xl font-bold text-green-600">594人</p>
-                    <p class="text-xs text-green-500 mt-1">全体の42.5%</p>
-                </div>
-            </div>
-
-            <!-- 購入パターン詳細 -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-3">📈 購入回数分布</h3>
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm">1回のみ</span>
-                            <div class="flex items-center gap-2">
-                                <div class="w-32 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-red-500 h-2 rounded-full" style="width: 57.5%"></div>
-                                </div>
-                                <span class="text-sm font-bold">805人 (57.5%)</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm">2回</span>
-                            <div class="flex items-center gap-2">
-                                <div class="w-32 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-orange-500 h-2 rounded-full" style="width: 23.7%"></div>
-                                </div>
-                                <span class="text-sm font-bold">332人 (23.7%)</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm">3回</span>
-                            <div class="flex items-center gap-2">
-                                <div class="w-32 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 10.4%"></div>
-                                </div>
-                                <span class="text-sm font-bold">145人 (10.4%)</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm">4回</span>
-                            <div class="flex items-center gap-2">
-                                <div class="w-32 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 4.5%"></div>
-                                </div>
-                                <span class="text-sm font-bold">63人 (4.5%)</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm">5回以上</span>
-                            <div class="flex items-center gap-2">
-                                <div class="w-32 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-green-500 h-2 rounded-full" style="width: 3.9%"></div>
-                                </div>
-                                <span class="text-sm font-bold">54人 (3.9%)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-3">⏰ 顧客活動期間分析</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center py-2 border-b border-gray-200">
-                            <span class="text-sm text-gray-600">1日のみ（初回のみ）</span>
-                            <span class="font-bold text-red-600">805人</span>
-                        </div>
-                        <div class="flex justify-between items-center py-2 border-b border-gray-200">
-                            <span class="text-sm text-gray-600">1週間未満</span>
-                            <span class="font-bold text-orange-600">142人</span>
-                        </div>
-                        <div class="flex justify-between items-center py-2 border-b border-gray-200">
-                            <span class="text-sm text-gray-600">1ヶ月未満</span>
-                            <span class="font-bold text-yellow-600">186人</span>
-                        </div>
-                        <div class="flex justify-between items-center py-2 border-b border-gray-200">
-                            <span class="text-sm text-gray-600">3ヶ月未満</span>
-                            <span class="font-bold text-blue-600">158人</span>
-                        </div>
-                        <div class="flex justify-between items-center py-2">
-                            <span class="text-sm text-gray-600">3ヶ月以上</span>
-                            <span class="font-bold text-green-600">108人</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- アラート -->
-            <div class="mt-6">
-                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                    <div class="flex items-start">
-                        <span class="text-2xl mr-3">⚠️</span>
-                        <div>
-                            <h4 class="font-bold text-red-800">重要な発見</h4>
-                            <p class="text-sm text-red-700 mt-1">
-                                顧客の半数以上（57.5%）が初回購入のみで離脱しています。
-                                初回購入後のフォローアップとリテンション施策が急務です。
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 改善提案 -->
-        <div class="glass p-6 mb-6 animate-slide" style="animation-delay: 0.9s">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">🎯 優先改善アクション</h2>
-            <div class="space-y-3">
-                <div class="flex items-start gap-3 p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
-                    <span class="text-2xl">🚨</span>
-                    <div>
-                        <h3 class="font-bold text-red-800">初回購入者のリテンション強化</h3>
-                        <p class="text-sm text-gray-700 mt-1">805名の初回のみ購入者（57.5%）への継続購入促進</p>
-                        <div class="flex gap-2 mt-2">
-                            <span class="px-2 py-1 bg-red-200 text-red-800 rounded text-xs">優先度: 最高</span>
-                            <span class="px-2 py-1 bg-gray-200 text-gray-800 rounded text-xs">期待効果: リピート率60%達成</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex items-start gap-3 p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
-                    <span class="text-2xl">📈</span>
-                    <div>
-                        <h3 class="font-bold text-orange-800">LTV向上施策</h3>
-                        <p class="text-sm text-gray-700 mt-1">アップセル・クロスセル戦略の強化</p>
-                        <div class="flex gap-2 mt-2">
-                            <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded text-xs">優先度: 高</span>
-                            <span class="px-2 py-1 bg-gray-200 text-gray-800 rounded text-xs">期待効果: LTV 20%UP</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
-                    <span class="text-2xl">🔄</span>
-                    <div>
-                        <h3 class="font-bold text-yellow-800">継続購入システム構築</h3>
-                        <p class="text-sm text-gray-700 mt-1">3ヶ月以上継続する108人の優良顧客を2倍に拡大</p>
-                        <div class="flex gap-2 mt-2">
-                            <span class="px-2 py-1 bg-yellow-200 text-yellow-800 rounded text-xs">優先度: 中</span>
-                            <span class="px-2 py-1 bg-gray-200 text-gray-800 rounded text-xs">LTV 2倍向上</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex items-start gap-3 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-                    <span class="text-2xl">📦</span>
-                    <div>
-                        <h3 class="font-bold text-blue-800">商品ポートフォリオ多様化</h3>
-                        <p class="text-sm text-gray-700 mt-1">マンジャロ依存（85.4%）からの脱却とリスク分散</p>
-                        <div class="flex gap-2 mt-2">
-                            <span class="px-2 py-1 bg-blue-200 text-blue-800 rounded text-xs">優先度: 中</span>
-                            <span class="px-2 py-1 bg-gray-200 text-gray-800 rounded text-xs">リスク軽減</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 成長インジケーター -->
-        <div class="glass p-6 animate-slide" style="animation-delay: 1.0s">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">🚀 成長指標サマリー</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-green-600">+53%</div>
-                    <p class="text-sm text-gray-600">売上成長率</p>
-                    <p class="text-xs text-gray-500">前期比</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-blue-600">1,399</div>
-                    <p class="text-sm text-gray-600">総顧客数</p>
-                    <p class="text-xs text-gray-500">ユニーク</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-purple-600">5,208</div>
-                    <p class="text-sm text-gray-600">総取引数</p>
-                    <p class="text-xs text-gray-500">全期間</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-orange-600">¥24,227</div>
-                    <p class="text-sm text-gray-600">平均取引額</p>
-                    <p class="text-xs text-gray-500">全期間</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- フッター -->
-        <div class="text-center text-white mt-8 opacity-80">
-            <p class="text-sm">© 2025 RMC購入分析レポート | 機密情報 - 取り扱い注意</p>
         </div>
     </div>
 
     <script>
-        // DOM読み込み完了後に実行
         document.addEventListener('DOMContentLoaded', function() {
             // 月次売上推移グラフ
             const salesCanvas = document.getElementById('salesChart');
@@ -436,12 +270,7 @@
                             borderColor: 'rgba(102, 126, 234, 1)',
                             borderWidth: 3,
                             fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: '#fff',
-                            pointBorderColor: 'rgba(102, 126, 234, 1)',
-                            pointBorderWidth: 2,
-                            pointRadius: 5,
-                            pointHoverRadius: 7
+                            tension: 0.4
                         }]
                     },
                     options: {
@@ -450,16 +279,6 @@
                         plugins: {
                             legend: {
                                 display: false
-                            },
-                            tooltip: {
-                                backgroundColor: 'rgba(0,0,0,0.8)',
-                                padding: 12,
-                                cornerRadius: 8,
-                                callbacks: {
-                                    label: function(context) {
-                                        return '売上: ¥' + context.parsed.y.toLocaleString();
-                                    }
-                                }
                             }
                         },
                         scales: {
@@ -469,14 +288,6 @@
                                     callback: function(value) {
                                         return '¥' + (value/1000000).toFixed(1) + 'M';
                                     }
-                                },
-                                grid: {
-                                    color: 'rgba(0,0,0,0.05)'
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    display: false
                                 }
                             }
                         }
@@ -510,27 +321,14 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                position: 'bottom',
-                                labels: {
-                                    padding: 15,
-                                    font: {
-                                        size: 11
-                                    }
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return context.label + ': ' + context.parsed + '%';
-                                    }
-                                }
+                                position: 'bottom'
                             }
                         }
                     }
                 });
             }
 
-            // 顧客セグメント（ドーナツチャート）
+            // 顧客セグメント
             const segmentCanvas = document.getElementById('segmentChart');
             if (segmentCanvas) {
                 const segmentCtx = segmentCanvas.getContext('2d');
@@ -541,16 +339,15 @@
                         datasets: [{
                             data: [30.4, 30.0, 16.2, 9.6, 9.4, 4.4],
                             backgroundColor: [
-                                'rgba(59, 130, 246, 0.8)',   // 新規顧客 - 青
-                                'rgba(239, 68, 68, 0.8)',    // 離脱リスク - 赤
-                                'rgba(168, 85, 247, 0.8)',   // VIP顧客 - 紫
-                                'rgba(156, 163, 175, 0.8)',  // 休眠顧客 - グレー
-                                'rgba(34, 197, 94, 0.8)',    // 安定顧客 - 緑
-                                'rgba(251, 146, 60, 0.8)'    // ロイヤル顧客 - オレンジ
+                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(168, 85, 247, 0.8)',
+                                'rgba(156, 163, 175, 0.8)',
+                                'rgba(34, 197, 94, 0.8)',
+                                'rgba(251, 146, 60, 0.8)'
                             ],
                             borderWidth: 3,
-                            borderColor: '#fff',
-                            hoverOffset: 8
+                            borderColor: '#fff'
                         }]
                     },
                     options: {
@@ -559,33 +356,7 @@
                         cutout: '45%',
                         plugins: {
                             legend: {
-                                position: 'bottom',
-                                labels: {
-                                    padding: 15,
-                                    font: {
-                                        size: 11
-                                    },
-                                    usePointStyle: true,
-                                    pointStyle: 'circle'
-                                }
-                            },
-                            tooltip: {
-                                backgroundColor: 'rgba(0,0,0,0.8)',
-                                padding: 12,
-                                cornerRadius: 8,
-                                callbacks: {
-                                    label: function(context) {
-                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const percentage = ((context.raw / total) * 100).toFixed(1);
-                                        const customerCount = Math.round((context.raw / 100) * 1399); // 総顧客数1399人
-                                        return context.label + ': ' + customerCount + '人 (' + percentage + '%)';
-                                    }
-                                }
-                            }
-                        },
-                        elements: {
-                            arc: {
-                                borderAlign: 'inner'
+                                position: 'bottom'
                             }
                         }
                     }
@@ -593,14 +364,5 @@
             }
         });
     </script>
-
-        </div>
-        
-        <!-- フッター -->
-        <footer class="footer">
-            <p>© 2025 六本木メディカルクリニック</p>
-            <p>本レポートは機密情報を含むため、取り扱いには十分ご注意ください。</p>
-        </footer>
-    </div>
 </body>
 </html>

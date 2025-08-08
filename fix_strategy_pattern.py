@@ -1,4 +1,17 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""
+戦略パターンページを縦並びに変更し、情報量を復元
+"""
+
+import os
+
+html_dir = '/Users/noriken/Desktop/01_仕事_資料置き場/01_会議資料/明/RMC_財務分析/html資料/'
+
+def fix_strategy_pattern():
+    """戦略パターンページを修正"""
+    filepath = os.path.join(html_dir, 'RMC戦略パターン詳細比較.html')
+    
+    html_content = '''<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -1028,4 +1041,24 @@
         </div>
     </div>
 </body>
-</html>
+</html>'''
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    
+    print(f"✅ RMC戦略パターン詳細比較.html を修正（縦並び・情報量復元）")
+
+def main():
+    print("="*60)
+    print("戦略パターンページ修正スクリプト")
+    print("="*60)
+    
+    fix_strategy_pattern()
+    
+    print("\n✅ 完了！")
+    print("  - 縦並びレイアウトに変更")
+    print("  - 元の詳細情報を復元")
+    print("  - 横幅は1200pxで統一")
+
+if __name__ == "__main__":
+    main()
