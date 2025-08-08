@@ -3,146 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RMC購入分析ダッシュボード - 経営インフォグラフィック</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>RMC 購入分析インフォグラフィック</title>
+    <link rel="stylesheet" href="common-styles.css">
     <style>
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        }
-        .metric-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
-        .metric-card:hover {
-            transform: translateY(-5px);
-        }
-        .status-excellent { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .status-good { background: linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%); }
-        .status-warning { background: linear-gradient(135deg, #F2994A 0%, #F27121 100%); }
-        .status-danger { background: linear-gradient(135deg, #EB5757 0%, #D13D3D 100%); }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-slide { animation: slideIn 0.5s ease-out; }
-        
-        .chart-container {
-            position: relative;
-            height: 400px;
-            width: 100%;
-            margin: 20px 0;
-        }
-        
-        .chart-wrapper {
-            position: relative;
-            height: 280px;
-            width: 100%;
-        }
-        
-        .segment-detail {
-            transition: all 0.3s ease;
-        }
-        
-        .segment-detail:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .product-bar {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .timeline-dot {
-            width: 12px;
-            height: 12px;
-            background: #667eea;
-            border-radius: 50%;
-            position: relative;
-        }
-        
-        .kpi-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
-        .growth-indicator {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-        
-        .growth-up { background: #10B981; color: white; }
-        .growth-down { background: #EF4444; color: white; }
-        
-        /* ナビゲーションタブ */
-        .nav-tabs {
-            background: white;
-            padding: 20px 40px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-            border-bottom: 2px solid #e5e7eb;
-            margin-bottom: 20px;
-            border-radius: 15px;
-        }
-        
-        .nav-tabs .nav-title {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #667eea;
-            margin-right: auto;
-        }
-        
-        .nav-tabs a {
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
-            color: #333;
-            font-weight: 500;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            font-size: 0.95em;
-        }
-        
-        .nav-tabs a:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-        
-        .nav-tabs a.current {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        /* ページ固有のスタイル */
+        .page-specific {
+            /* 必要に応じて追加 */
         }
     </style>
 </head>
-<body class="min-h-screen p-4">
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1>六本木メディカルクリニック</h1>
+            <p class="subtitle">商品別売上とセグメント分析</p>
+            <p class="date">2025年8月 最新データ</p>
+            
+            <!-- ナビゲーションタブ -->
+            <nav class="nav-tabs">
+                <ul>
+                    <li><a href="./index.html" >経営分析レポート</a></li>
+                    <li><a href="./RMC戦略パターン詳細比較.html" >戦略パターン比較</a></li>
+                    <li><a href="./RMC_購入分析_インフォグラフィック.html" class="active">購入分析</a></li>
+                    <li><a href="./購買行動分析_インフォグラフィック.html" >購買行動分析</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <div class="content">
+
     <div class="max-w-7xl mx-auto">
         <!-- ナビゲーションタブ -->
         <div class="nav-tabs">
@@ -719,5 +610,14 @@
             }
         });
     </script>
+
+        </div>
+        
+        <!-- フッター -->
+        <footer class="footer">
+            <p>© 2025 六本木メディカルクリニック</p>
+            <p>本レポートは機密情報を含むため、取り扱いには十分ご注意ください。</p>
+        </footer>
+    </div>
 </body>
 </html>
