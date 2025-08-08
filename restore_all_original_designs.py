@@ -1,4 +1,674 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""
+経営分析レポート以外のすべてのページを元のデザインに復元
+横幅は1200pxで統一したまま、タイポグラフィーや図形などのビジュアル要素を復元
+"""
+
+import os
+
+html_dir = '/Users/noriken/Desktop/01_仕事_資料置き場/01_会議資料/明/RMC_財務分析/html資料/'
+
+# RMC戦略パターン詳細比較.htmlの復元
+def restore_strategy_comparison():
+    """戦略パターン比較ページを元のデザインに復元"""
+    filepath = os.path.join(html_dir, 'RMC戦略パターン詳細比較.html')
+    
+    html_content = '''<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RMCクリニック 戦略パターン詳細比較分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* ナビゲーションタブ */
+        .nav-tabs {
+            background: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            border-bottom: 2px solid #e5e7eb;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .nav-tabs .nav-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+            margin-right: auto;
+        }
+        
+        .nav-tabs a {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 0.95em;
+        }
+        
+        .nav-tabs a:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .nav-tabs a.current {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .main-header {
+            text-align: center;
+            color: white;
+            padding: 80px 20px;
+            margin-bottom: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .main-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(45deg, #fff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .main-header .subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .strategies-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .strategy-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f4f8;
+        }
+
+        .strategy-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-right: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .strategy-title h3 {
+            font-size: 1.6rem;
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .strategy-title .subtitle {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .metric-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .metric-item:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 5px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .risk-level {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .risk-low {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .risk-medium {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            color: white;
+        }
+
+        .risk-high {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+        }
+
+        .pros-cons {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid #f0f4f8;
+        }
+
+        .pros-cons h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .pros-cons h4::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .pros h4::before {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+
+        .cons h4::before {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+
+        .pros-cons ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pros-cons li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .pros li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .cons li::before {
+            content: "✕";
+            position: absolute;
+            left: 0;
+            color: #f56565;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .winner-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #f6ad55, #ed8936);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 20px rgba(237, 137, 54, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .comparison-summary {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 40px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .comparison-summary h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #2d3748;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-item {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .summary-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .recommendation-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 50px;
+            border-radius: 25px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .recommendation-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .recommendation-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .action-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ナビゲーションタブ -->
+        <nav class="nav-tabs">
+            <div class="nav-title">六本木メディカルクリニック</div>
+            <a href="./index.html">経営分析レポート</a>
+            <a href="./RMC戦略パターン詳細比較.html" class="current">戦略パターン比較</a>
+            <a href="./RMC_購入分析_インフォグラフィック.html">購入分析</a>
+            <a href="./購買行動分析_インフォグラフィック.html">購買行動分析</a>
+            <a href="./株主総会資料_2025.html">株主総会資料</a>
+        </nav>
+
+        <header class="main-header">
+            <h1>戦略パターン詳細比較分析</h1>
+            <p class="subtitle">データドリブンな最適戦略の選択</p>
+        </header>
+
+        <div class="strategies-container">
+            <!-- 戦略A: 積極拡大戦略 -->
+            <div class="strategy-card">
+                <div class="strategy-header">
+                    <div class="strategy-icon">🚀</div>
+                    <div class="strategy-title">
+                        <h3>戦略A: 積極拡大</h3>
+                        <p class="subtitle">高成長・高リスク</p>
+                    </div>
+                </div>
+                
+                <div class="metric-grid">
+                    <div class="metric-item">
+                        <div class="metric-label">期待売上成長</div>
+                        <div class="metric-value">250%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">必要投資額</div>
+                        <div class="metric-value">¥500万</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">ROI</div>
+                        <div class="metric-value">320%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">回収期間</div>
+                        <div class="metric-value">6ヶ月</div>
+                    </div>
+                </div>
+
+                <span class="risk-level risk-high">リスク: 高</span>
+
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>メリット</h4>
+                        <ul>
+                            <li>最大の成長ポテンシャル</li>
+                            <li>市場シェア急拡大</li>
+                            <li>ブランド認知度向上</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>リスク</h4>
+                        <ul>
+                            <li>初期投資額が大きい</li>
+                            <li>運転資金の圧迫</li>
+                            <li>品質管理の課題</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 戦略B: バランス成長戦略 -->
+            <div class="strategy-card">
+                <div class="winner-badge">推奨</div>
+                <div class="strategy-header">
+                    <div class="strategy-icon">⚖️</div>
+                    <div class="strategy-title">
+                        <h3>戦略B: バランス成長</h3>
+                        <p class="subtitle">中成長・中リスク</p>
+                    </div>
+                </div>
+                
+                <div class="metric-grid">
+                    <div class="metric-item">
+                        <div class="metric-label">期待売上成長</div>
+                        <div class="metric-value">150%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">必要投資額</div>
+                        <div class="metric-value">¥200万</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">ROI</div>
+                        <div class="metric-value">450%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">回収期間</div>
+                        <div class="metric-value">3ヶ月</div>
+                    </div>
+                </div>
+
+                <span class="risk-level risk-medium">リスク: 中</span>
+
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>メリット</h4>
+                        <ul>
+                            <li>最適なリスク・リターン</li>
+                            <li>段階的な成長が可能</li>
+                            <li>品質維持しやすい</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>リスク</h4>
+                        <ul>
+                            <li>競合に先行されるリスク</li>
+                            <li>中途半端になる可能性</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 戦略C: 安定維持戦略 -->
+            <div class="strategy-card">
+                <div class="strategy-header">
+                    <div class="strategy-icon">🛡️</div>
+                    <div class="strategy-title">
+                        <h3>戦略C: 安定維持</h3>
+                        <p class="subtitle">低成長・低リスク</p>
+                    </div>
+                </div>
+                
+                <div class="metric-grid">
+                    <div class="metric-item">
+                        <div class="metric-label">期待売上成長</div>
+                        <div class="metric-value">50%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">必要投資額</div>
+                        <div class="metric-value">¥50万</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">ROI</div>
+                        <div class="metric-value">200%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">回収期間</div>
+                        <div class="metric-value">2ヶ月</div>
+                    </div>
+                </div>
+
+                <span class="risk-level risk-low">リスク: 低</span>
+
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>メリット</h4>
+                        <ul>
+                            <li>最小限の投資リスク</li>
+                            <li>確実な収益確保</li>
+                            <li>運営の安定性</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>リスク</h4>
+                        <ul>
+                            <li>成長機会の損失</li>
+                            <li>市場シェア縮小リスク</li>
+                            <li>イノベーション不足</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section comparison-summary">
+            <h2>総合比較サマリー</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">最高ROI</div>
+                    <div class="summary-value">450%</div>
+                    <p style="color: #718096; margin-top: 10px;">戦略B</p>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">最速回収</div>
+                    <div class="summary-value">2ヶ月</div>
+                    <p style="color: #718096; margin-top: 10px;">戦略C</p>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">最大成長</div>
+                    <div class="summary-value">250%</div>
+                    <p style="color: #718096; margin-top: 10px;">戦略A</p>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">推奨戦略</div>
+                    <div class="summary-value">B</div>
+                    <p style="color: #718096; margin-top: 10px;">バランス型</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="recommendation-section">
+            <h2>推奨アクション</h2>
+            <div class="recommendation-content">
+                <p>現在の市場環境と財務状況を考慮すると、<strong>戦略B（バランス成長戦略）</strong>が最適です。</p>
+                <p>段階的な成長により品質を維持しながら、適切なリスク管理のもとで最大のROIを実現できます。</p>
+                <a href="#" class="action-button">実行計画を開始</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>'''
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    
+    print(f"✅ RMC戦略パターン詳細比較.html を元のデザインに復元")
+
+# 購買行動分析_インフォグラフィック.htmlの復元 
+def restore_purchase_behavior():
+    """購買行動分析ページを元のデザインに復元"""
+    filepath = os.path.join(html_dir, '購買行動分析_インフォグラフィック.html')
+    
+    # 購買行動分析ページを読み込んで必要な部分だけ修正
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # common-styles.cssの参照を削除し、元のスタイルを復元
+    new_content = '''<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -1042,4 +1712,27 @@
         });
     </script>
 </body>
-</html>
+</html>'''
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(new_content)
+    
+    print(f"✅ 購買行動分析_インフォグラフィック.html を元のデザインに復元")
+
+def main():
+    print("="*60)
+    print("元のデザインへの復元スクリプト（全ページ）")
+    print("="*60)
+    
+    restore_strategy_comparison()
+    restore_purchase_behavior()
+    
+    print("\n✅ 完了！経営分析レポート以外のページを元のデザインに復元しました")
+    print("  - グラデーション背景")
+    print("  - メトリックカード")
+    print("  - アニメーション効果")
+    print("  - 元のタイポグラフィー")
+    print("  - 横幅は1200pxで統一")
+
+if __name__ == "__main__":
+    main()
