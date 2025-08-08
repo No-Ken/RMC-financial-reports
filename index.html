@@ -10,6 +10,52 @@
         .page-specific {
             /* 必要に応じて追加 */
         }
+    
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 300px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .bar {
+            width: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+        }
+        
+        .bar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: #667eea;
+            white-space: nowrap;
+            font-size: 0.9em;
+        }
+        
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85em;
+            color: #6b7280;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -34,26 +80,6 @@
         <!-- メインコンテンツ -->
         <div class="content">
 
-        <!-- ナビゲーションタブ -->
-        <div class="nav-tabs">
-            <span class="nav-title">📊 RMC経営分析レポート</span>
-            <a href="./index.html" class="current">
-                <i>📈</i> メインレポート
-            </a>
-            <a href="./RMC戦略パターン詳細比較.html">
-                <i>🎯</i> 戦略パターン分析
-            </a>
-            <a href="./RMC_購入分析_インフォグラフィック.html">
-                <i>💰</i> 購入分析ダッシュボード
-            </a>
-            <a href="./購買行動分析_インフォグラフィック.html">
-                <i>🛒</i> 購買行動分析
-            </a>
-        </div>
-
-        <!-- ヘッダー -->
-        <div class="date">2025年8月（正式データ版）</div>
-        </div>
 
         <!-- ページ1: エグゼクティブサマリー -->
         <div class="page">
